@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 - Студент: [Сергей Мансуров](https://up.htmlacademy.ru/javascript/21/user/958445).
-- Наставник: `Артем Зрилов`.
+- Наставник: [Артем Зрилов](https://htmlacademy.ru/profile/id1045563).
 
 ---
 
