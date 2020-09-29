@@ -100,22 +100,22 @@ const getHouseType = (type) => {
 const renderCardAd = () => {
   const cardElement = tempCard.cloneNode(true);
   cardElement.querySelector(`.popup__title`)
-    .textContent = `` || ads[0].offer.title;
+    .textContent = ads[0].offer.title || ``;
   cardElement.querySelector(`.popup__text--address`)
-    .textContent = `` || ads[0].offer.address;
+    .textContent = ads[0].offer.address || ``;
   cardElement.querySelector(`.popup__text--price`)
-    .innerHTML = `` || `${ads[0].offer.price}&#8381;/ночь`;
+    .innerHTML = `${ads[0].offer.price}&#8381;/ночь` || ``;
   cardElement.querySelector(`.popup__type`)
-    .textContent = `` || `${getHouseType(ads[0].offer.type)}`;
+    .textContent = `${getHouseType(ads[0].offer.type)}` || ``;
   cardElement.querySelector(`.popup__text--capacity`)
-    .textContent = `` || `${ads[0].offer.rooms} комнаты для ${ads[0].offer.guests} гостей`;
+    .textContent = `${ads[0].offer.rooms} комнаты для ${ads[0].offer.guests} гостей` || ``;
   cardElement.querySelector(`.popup__text--time`)
-    .innerHTML = `` || `Заезд после ${ads[0].offer.checkin}, выезд&nbsp;до ${ads[0]
+    .innerHTML = `Заезд после ${ads[0].offer.checkin}, выезд&nbsp;до ${ads[0 || ``]
       .offer.checkin}`;
   cardElement.querySelector(`.popup__features`)
-    .innerHTML = `` || `${ads[0].offer.features.join(`, `)}`;
+    .innerHTML = `${ads[0].offer.features.join(`, `)}` || ``;
   cardElement.querySelector(`.popup__description`)
-    .innerHTML = `` || `${ads[0].offer.description}`;
+    .innerHTML = `${ads[0].offer.description}` || ``;
   if (ads[0].offer.photos) {
     ads[0].offer.photos.forEach((photo)=> {
       const photoElement = cardElement.querySelector(`.popup__photo`).cloneNode();
