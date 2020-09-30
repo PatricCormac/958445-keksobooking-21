@@ -110,8 +110,8 @@ const renderCardAd = () => {
   cardElement.querySelector(`.popup__text--capacity`)
     .textContent = `${ads[0].offer.rooms} комнаты для ${ads[0].offer.guests} гостей` || ``;
   cardElement.querySelector(`.popup__text--time`)
-    .innerHTML = `Заезд после ${ads[0].offer.checkin}, выезд&nbsp;до ${ads[0 || ``]
-      .offer.checkin}`;
+    .innerHTML = `Заезд после ${ads[0].offer.checkin}, выезд&nbsp;до ${ads[0]
+      .offer.checkin}` || ``;
   cardElement.querySelector(`.popup__features`)
     .innerHTML = `${ads[0].offer.features.join(`, `)}` || ``;
   cardElement.querySelector(`.popup__description`)
