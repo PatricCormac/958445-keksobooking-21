@@ -9,9 +9,16 @@ const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`,
   `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
 
 const tempPin = document.querySelector(`#pin`).content;
-const tempCard = document.querySelector(`#card`).content;
+//  const tempCard = document.querySelector(`#card`).content;
 const mapElement = document.querySelector(`.map`);
 const pinsList = mapElement.querySelector(`.map__pins`);
+const mainPin = pinsList.querySelector(`.map__pin--main`);
+const adForm = document.querySelector(`.ad-form`);
+const fieldsets = adForm.querySelectorAll(`fieldset`);
+
+for (let i = 0; i < fieldsets.length; i++) {
+  fieldsets[i].disabled = true;
+}
 
 const getRandomLengthArr = (arr) => {
   const newArr = [];
@@ -76,8 +83,56 @@ ads.forEach((ad)=>{
   fragment.appendChild(renderAds(ad));
 });
 
-pinsList.appendChild(fragment);
+const MAIN_PIN_WIDTH = mainPin.offsetWidth;
+const MAIN_PIN_HEIGHT = mainPin.offsetHeight;
 
+let mainPinLocationX = Math.round(parseInt(mainPin.style.left, 10) + parseInt(MAIN_PIN_WIDTH, 10) / 2);
+let mainPinLocationY = Math.round(parseInt(mainPin.style.top, 10) + parseInt(MAIN_PIN_HEIGHT, 10) / 2);
+
+const onActivePage = () => {
+  mapElement.classList.remove(`map--faded`);
+  pinsList.appendChild(fragment);
+  adForm.classList.remove(`ad-form--disabled`);
+  for (let i = 0; i < fieldsets.length; i++) {
+    fieldsets[i].disabled = false;
+  }
+};
+
+mainPin.addEventListener(`mousedown`, (evt) => {
+  if (evt.button === 0) {
+    onActivePage();
+  }
+});
+
+mainPin.addEventListener(`keydown`, (evt) => {
+  if (evt.key === `Enter`) {
+    onActivePage();
+  }
+});
+
+document.querySelector(`[name="address"]`).value = `${mainPinLocationX} ${mainPinLocationY}`;
+
+const inputRooms = document.querySelector(`#room_number`);
+const inputGuests = document.querySelector(`#capacity`);
+
+const roomsGuestsValidity = () => {
+  if (inputGuests.value > inputRooms.value) {
+    inputRooms.setCustomValidity(`Гости не поместятся!`);
+    inputGuests.setCustomValidity(`Гости не поместятся!`);
+  } else {
+    inputGuests.setCustomValidity(``);
+    inputRooms.setCustomValidity(``);
+  }
+
+  inputRooms.reportValidity();
+  inputGuests.reportValidity();
+};
+
+inputRooms.addEventListener(`input`, roomsGuestsValidity);
+
+inputGuests.addEventListener(`input`, roomsGuestsValidity);
+
+/*
 const getHouseType = (type) => {
   let houseType = ``;
   switch (type) {
@@ -133,3 +188,4 @@ const renderCardAd = () => {
 renderCardAd();
 
 mapElement.classList.remove(`map--faded`);
+*/
