@@ -51,5 +51,5 @@
       adElement.querySelector(`img`).alt = ad.offer.title;
       return adElement;
     }
-  }
+  };
 })();

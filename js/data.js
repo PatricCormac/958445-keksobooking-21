@@ -59,6 +59,6 @@
   }
 
   window.data = {
-    ads: ads
-  }
+    ads
+  };
 })();
