@@ -8,10 +8,7 @@
   const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`,
     `http://o0.github.io/assets/images/tokyo/hotel2.jpg`,
     `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
-
-  //  const tempCard = document.querySelector(`#card`).content;
-  window.mapElement = document.querySelector(`.map`);
-  window.pinsList = window.mapElement.querySelector(`.map__pins`);
+  const pinsList = document.querySelector(`.map__pins`);
 
   const getRandomLengthArr = (arr) => {
     const newArr = [];
@@ -29,15 +26,15 @@
     return Math.floor(Math.random() * length);
   };
 
-  window.ads = [];
+  const ads = [];
 
   for (let i = 0; i < 8; i++) {
-    const x = randomInteger(null, 0, window.pinsList.offsetWidth);
+    const x = randomInteger(null, 0, pinsList.offsetWidth);
     const y = randomInteger(null, 130, 630);
-    const locationX = x + 50 > window.pinsList.offsetWidth ? x - 50 : x;
-    const locationY = y + 70 > window.pinsList.offsetHeight ? y - 70 : y;
+    const locationX = x + 50 > pinsList.offsetWidth ? x - 50 : x;
+    const locationY = y + 70 > pinsList.offsetHeight ? y - 70 : y;
 
-    window.ads[i] = {
+    ads[i] = {
       author: {
         avatar: `img/avatars/user0${i + 1}.png`
       },
@@ -61,4 +58,7 @@
     };
   }
 
+  window.data = {
+    ads: ads
+  }
 })();

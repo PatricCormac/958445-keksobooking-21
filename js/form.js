@@ -1,14 +1,8 @@
 'use strict';
 
 (() => {
-  window.adForm = document.querySelector(`.ad-form`);
-  window.fieldsets = window.adForm.querySelectorAll(`fieldset`);
   const inputRooms = document.querySelector(`#room_number`);
   const inputGuests = document.querySelector(`#capacity`);
-
-  for (let i = 0; i < window.fieldsets.length; i++) {
-    window.fieldsets[i].disabled = true;
-  }
 
   const roomsGuestsValidity = () => {
     if (inputGuests.value > inputRooms.value) {
@@ -24,7 +18,5 @@
   };
 
   inputRooms.addEventListener(`input`, roomsGuestsValidity);
-
   inputGuests.addEventListener(`input`, roomsGuestsValidity);
-
 })();
