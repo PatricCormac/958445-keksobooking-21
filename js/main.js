@@ -1,8 +1,5 @@
 'use strict';
 
 document.addEventListener(`DOMContentLoaded`, () => {
-
-  window.data.ads.forEach((ad) => {
-    window.pin.fragment.appendChild(window.pin.renderAds(ad));
-  });
+  window.pin.appEndAds(window.data.ads);
 });

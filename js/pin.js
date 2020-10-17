@@ -41,15 +41,20 @@
     }
   });
 
+  const renderAds = (ad) => {
+    const adElement = tempPin.cloneNode(true);
+    adElement.querySelector(`.map__pin`).style =
+      `left: ${ad.location.x}px; top: ${ad.location.y}px;`;
+    adElement.querySelector(`img`).src = ad.author.avatar;
+    adElement.querySelector(`img`).alt = ad.offer.title;
+    return adElement;
+  };
+
   window.pin = {
-    fragment,
-    renderAds: (ad) => {
-      const adElement = tempPin.cloneNode(true);
-      adElement.querySelector(`.map__pin`).style =
-        `left: ${ad.location.x}px; top: ${ad.location.y}px;`;
-      adElement.querySelector(`img`).src = ad.author.avatar;
-      adElement.querySelector(`img`).alt = ad.offer.title;
-      return adElement;
+    appEndAds: (arr) => {
+      arr.forEach((ad) => {
+        fragment.append(renderAds(ad));
+      });
     }
   };
 })();
