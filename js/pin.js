@@ -52,7 +52,7 @@
 
   window.pin = {
     appEndAds: (arr) => {
-      arr.forEach((ad) => {
+      arr.map((ad) => {
         fragment.append(renderAds(ad));
       });
     }
