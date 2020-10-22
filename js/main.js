@@ -1,5 +1,7 @@
 'use strict';
 
 document.addEventListener(`DOMContentLoaded`, () => {
-  window.pin.appEndAds(window.data.ads);
+  window.backend.load((ads) => {
+    window.pin.appEndAds(ads);
+  });
 });

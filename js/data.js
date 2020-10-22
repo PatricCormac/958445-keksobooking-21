@@ -1,7 +1,7 @@
 'use strict';
 
 (() => {
-  const TYPES_HOUSES = [`palace`, `flat`, `house`, `bungalow`];
+  /* const TYPES_HOUSES = [`palace`, `flat`, `house`, `bungalow`];
   const CHECKINS = [`12:00`, `13:00`, `14:00`];
   const CHECKOUTS = [`12:00`, `13:00`, `14:00`];
   const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
@@ -25,8 +25,6 @@
     }
     return Math.floor(Math.random() * length);
   };
-
-  const ads = [];
 
   for (let i = 0; i < 8; i++) {
     const x = randomInteger(null, 0, pinsList.offsetWidth);
@@ -56,9 +54,5 @@
         y: locationY
       }
     };
-  }
-
-  window.data = {
-    ads
-  };
+  }*/
 })();
