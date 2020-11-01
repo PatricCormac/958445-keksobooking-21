@@ -26,15 +26,19 @@
     switch (typeHouseValue) {
       case `palace`:
         inputPrice.min = `10000`;
+        inputPrice.placeholder = `10000`;
         break;
       case `flat`:
         inputPrice.min = `1000`;
+        inputPrice.placeholder = `1000`;
         break;
       case `house`:
         inputPrice.min = `5000`;
+        inputPrice.placeholder = `5000`;
         break;
       case `bungalo`:
         inputPrice.min = `0`;
+        inputPrice.placeholder = `0`;
         break;
     }
   });
