@@ -17,6 +17,14 @@
       `left: ${ad.location.x}px; top: ${ad.location.y}px;`;
     adElement.querySelector(`img`).src = ad.author.avatar;
     adElement.querySelector(`img`).alt = ad.offer.title;
+    adElement.querySelector(`.map__pin`).addEventListener(`preskey`, (evt) => {
+      if (evt.key === `Enter`) {
+        window.renderCardAd(ad);
+      }
+    });
+    adElement.querySelector(`.map__pin`).addEventListener(`click`, () => {
+      window.renderCardAd(ad);
+    });
     return adElement;
   };
 
