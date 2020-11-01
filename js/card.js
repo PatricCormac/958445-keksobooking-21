@@ -2,6 +2,35 @@
 
 (() => {
   const tempCard = document.querySelector(`#card`).content;
+  const mapElement = document.querySelector(`.map`);
+
+  const pressEscHandler = (evt) => {
+    if (evt.key === `Escape`) {
+      closeCard();
+    }
+  };
+
+  const pressEnterHandler = (evt) => {
+    if (evt.key === `Enter`) {
+      closeCard();
+    }
+  };
+
+  const openCard = (cardElement) => {
+    mapElement.insertBefore(cardElement, mapElement.querySelector(`.map__filters-container`));
+    const closeCardButton = document.querySelector(`.popup__close`);
+    document.addEventListener(`keydown`, pressEscHandler);
+    closeCardButton.addEventListener(`click`, closeCard);
+    closeCardButton.addEventListener(`keydown`, pressEnterHandler);
+  };
+
+  const closeCard = () => {
+    const closeCardButton = document.querySelector(`.popup__close`);
+    document.removeEventListener(`keydown`, pressEscHandler);
+    closeCardButton.removeEventListener(`keydown`, pressEnterHandler);
+    closeCardButton.removeEventListener(`click`, closeCard);
+    document.querySelector(`.map__card.popup`).remove();
+  };
 
   const getHouseType = (type) => {
     let houseType = ``;
@@ -15,7 +44,7 @@
       case `house`:
         houseType = `Дом`;
         break;
-      case `bungalow`:
+      case `bungalo`:
         houseType = `Бунгало`;
         break;
     }
@@ -24,7 +53,7 @@
 
   window.renderCardAd = (ad) => {
     if (document.querySelector(`.map__card.popup`)) {
-      window.utils.closeCard();
+      closeCard();
     }
 
     const cardElement = tempCard.cloneNode(true);
@@ -60,6 +89,6 @@
 
     cardElement.querySelector(`.popup__avatar`).src = `${ad.author.avatar}`;
 
-    window.utils.openCard(cardElement);
+    openCard(cardElement);
   };
 })();
