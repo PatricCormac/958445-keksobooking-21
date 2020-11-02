@@ -2,7 +2,7 @@
 
 (() => {
   const MAX_COUNT_PINS = 5;
-  const houseTypeElement = document.querySelector(`#type`);
+  const houseTypeElement = document.querySelector(`#housing-type`);
   const tempPin = document.querySelector(`#pin`).content;
   const pinsList = document.querySelector(`.map__pins`);
   const mainPin = document.querySelector(`.map__pin--main`);
@@ -48,10 +48,14 @@
 
   houseTypeElement.addEventListener(`change`, () => {
     houseType = houseTypeElement.value;
-    let filteredAds = ads.filter((ad) => {
-      return ad.offer.type === houseType;
-    });
-    updateAds(filteredAds);
+    if (houseType === `any`) {
+      updateAds(ads);
+    } else {
+      let filteredAds = ads.filter((ad) => {
+        return ad.offer.type === houseType;
+      });
+      updateAds(filteredAds);
+    }
   });
 
   window.render = {
