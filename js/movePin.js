@@ -9,8 +9,6 @@
   const TOP_FIELD_BORDER = 130;
   const BOTTOM_FIELD_BORDER = 630;
 
-  console.log(PIN_HEIGHT, PIN_WIDTH);
-
   pin.addEventListener(`mousedown`, (evt) => {
     evt.preventDefault();
 
