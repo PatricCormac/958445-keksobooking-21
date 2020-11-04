@@ -1,32 +1,26 @@
 'use strict';
 
 window.backend = (() => {
-  const URL = `https://21.javascript.pages.academy/keksobooking/data`;
+  const URL = `https://21.javascript.pages.academy/keksobooking`;
   const statusCode = {
     OK: 200
   };
   const TIMEOUT_IN_MS = 10000;
+  const errorTemp = document.querySelector(`#error`).content;
 
-  const showErrorElement = (text) => {
-    const errorElement = document.createElement(`div`);
-    errorElement.style = `
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 800px;
-      height: 80%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 15px;
-      background-color: #fff;
-      color: #000;
-      font-weight: 700;
-      line-height: 1.5;
-      z-index: 100`;
-    errorElement.textContent = text;
-    document.body.append(errorElement);
+  const hideError = () => {
+    document.querySelector(`main`).removeChild(document.querySelector(`.error`));
+  };
+
+  const showError = () => {
+    const errorElement = errorTemp.cloneNode(true);
+    document.querySelector(`main`).append(errorElement);
+    document.addEventListener(`click`, hideError);
+    document.addEventListener(`keydown`, (evt) => {
+      if (evt.key === `Escape`) {
+        hideError();
+      }
+    });
   };
 
   return {
@@ -38,22 +32,48 @@ window.backend = (() => {
         if (xhr.status === statusCode.OK) {
           onSuccess(xhr.response);
         } else {
-          onError(showErrorElement(`Статус ответа: ${xhr.status} ${xhr.statusText}`));
+          onError(showError());
         }
       });
 
       xhr.addEventListener(`error`, () => {
-        onError(showErrorElement(`Произошла ошибка соединения`));
+        onError(showError());
       });
 
       xhr.addEventListener(`timeout`, () => {
-        onError(showErrorElement(`Запрос не успел выполниться за ${xhr.timeout} мс`));
+        onError(showError());
       });
 
       xhr.timeout = TIMEOUT_IN_MS;
 
-      xhr.open(`GET`, URL);
+      xhr.open(`GET`, `${URL}/data`);
       xhr.send();
+    },
+
+    save: (data, onLoad, onError) => {
+      const xhr = new XMLHttpRequest();
+      xhr.responseType = `json`;
+
+      xhr.addEventListener(`load`, () => {
+        if (xhr.status === statusCode.OK) {
+          onLoad(xhr.response);
+        } else {
+          onError(showError());
+        }
+      });
+
+      xhr.addEventListener(`error`, () => {
+        onError(showError());
+      });
+
+      xhr.addEventListener(`timeout`, () => {
+        onError(showError());
+      });
+
+      xhr.timeout = TIMEOUT_IN_MS;
+
+      xhr.open(`POST`, `${URL}`);
+      xhr.send(data);
     }
   };
 })();

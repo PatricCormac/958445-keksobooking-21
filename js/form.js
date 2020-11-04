@@ -1,12 +1,13 @@
 'use strict';
 
 (() => {
-  const inputRooms = document.querySelector(`#room_number`);
-  const inputGuests = document.querySelector(`#capacity`);
-  const inputPrice = document.querySelector(`#price`);
-  const inputTypeHouse = document.querySelector(`#type`);
-  const inputTimeIn = document.querySelector(`#timein`);
-  const inputTimeOut = document.querySelector(`#timeout`);
+  const form = document.querySelector(`.ad-form`);
+  const inputRooms = form.querySelector(`#room_number`);
+  const inputGuests = form.querySelector(`#capacity`);
+  const inputPrice = form.querySelector(`#price`);
+  const inputTypeHouse = form.querySelector(`#type`);
+  const inputTimeIn = form.querySelector(`#timein`);
+  const inputTimeOut = form.querySelector(`#timeout`);
 
   const roomsGuestsValidity = () => {
     if (inputGuests.value > inputRooms.value) {
@@ -53,4 +54,11 @@
 
   inputRooms.addEventListener(`input`, roomsGuestsValidity);
   inputGuests.addEventListener(`input`, roomsGuestsValidity);
+
+  form.addEventListener(`submit`, (evt) => {
+    window.backend.save(new FormData(form), () => {
+      window.pin.onDisablePage();
+    });
+    evt.preventDefault();
+  });
 })();
