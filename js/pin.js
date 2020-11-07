@@ -37,7 +37,7 @@
         document.removeEventListener(`mousedown`, window.pin.onActivePage);
       }
       mapElement.classList.remove(`map--faded`);
-      pinsList.append(window.render.pins);
+      pinsList.append(window.filters.pins);
       adForm.classList.remove(`ad-form--disabled`);
       document.querySelector(`[name="address"]`).value = `${mainPinLocationX} ${mainPinLocationY}`;
       for (let i = 0; i < fieldsets.length; i++) {
