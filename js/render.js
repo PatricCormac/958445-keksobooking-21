@@ -12,11 +12,11 @@
       adElement.querySelector(`img`).alt = ad.offer.title;
       adElement.querySelector(`.map__pin`).addEventListener(`preskey`, (evt) => {
         if (evt.key === `Enter`) {
-          window.renderCardAd(ad);
+          window.card.renderCardAd(ad);
         }
       });
       adElement.querySelector(`.map__pin`).addEventListener(`click`, () => {
-        window.renderCardAd(ad);
+        window.card.renderCardAd(ad);
       });
       return adElement;
     }

@@ -17,7 +17,11 @@
 
   const appEndAds = (arr) => {
     for (let i = 0; i < maxCountPins; i++) {
-      fragment.append(window.render.renderAds(arr[i]));
+      if (arr[i]) {
+        fragment.append(window.render.renderAds(arr[i]));
+      } else {
+        return;
+      }
     }
   };
 
@@ -33,150 +37,101 @@
     pinsList.appendChild(fragment);
   };
 
-  const housingTypeFilter = () => {
-    let arr = [];
-    if (housingType.value === `any`) {
-      arr = ads;
-    } else {
-      arr = ads.filter((item) => item.offer.type === housingType.value);
-    }
-
-    return arr;
+  const housingTypeFilter = (item) => {
+    return housingType.value === `any` ? true : item.offer.type === housingType.value;
   };
 
-  const housingPriceFilter = () => {
-    let arr = [];
+  const housingPriceFilter = (item) => {
     switch (housingPrice.value) {
       case `low`:
-        arr = ads.filter((item) => item.offer.price < 10000);
-        break;
+        return item.offer.price <= 10000;
       case `middle`:
-        arr = ads.filter((item) => item.offer.price >= 10000 && item.offer.price < 50000);
-        break;
+        return item.offer.price > 10000 && item.offer.price < 50000;
       case `high`:
-        arr = ads.filter((item) => item.offer.price >= 50000);
-        break;
+        return item.offer.price >= 50000;
       case `any`:
-        arr = ads;
-        break;
+        return true;
     }
-
-    return arr;
+    return 0;
   };
 
-  const housingRoomsFilter = () => {
-    let arr = [];
+  const housingRoomsFilter = (item) => {
     if (housingRooms.value === `any`) {
-      arr = ads;
+      return true;
     } else {
-      arr = ads.filter((item) => item.offer.rooms === parseInt(housingRooms.value, 10));
+      return item.offer.rooms === parseInt(housingRooms.value, 10);
     }
-
-    return arr;
   };
 
-  const housingGuestsFilter = () => {
-    let arr = [];
+  const housingGuestsFilter = (item) => {
     if (housingGuests.value === `any`) {
-      arr = ads;
+      return true;
     } else {
-      arr = ads.filter((item) => item.offer.guests === parseInt(housingGuests.value, 10));
+      return item.offer.guests === parseInt(housingGuests.value, 10);
     }
-    return arr;
   };
 
-  const housingFeaturesFilter = () => {
-    let arr = [];
-    let features = [];
-    for (let i = 0; i < housingFeatures.querySelectorAll(`input:checked`).length; i++) {
-      features.push(housingFeatures.querySelectorAll(`input:checked`)[i].value);
-    }
-    arr = ads.filter((item) => {
-      let countFeatures = 0;
-      for (let i = 0; i < features.length; i++) {
-        if (item.offer.features.includes(features[i])) {
-          countFeatures++;
-        }
-      }
-      item.countFeatures = countFeatures;
-      return item.countFeatures > 0;
+  const housingFeaturesFilter = (item) => {
+    return Array.from(housingFeatures.querySelectorAll(`input:checked`)).every((el) => {
+      return item.offer.features.includes(el.value);
     });
-
-    arr.sort((left, right) => {
-      if (left.countFeatures < right.countFeatures) {
-        return 1;
-      }
-      if (left.countFeatures > right.countFeatures) {
-        return -1;
-      }
-      if (left.countFeatures === right.countFeatures) {
-        return 0;
-      }
-      return 0;
-    });
-    return arr;
   };
 
   const onFilter = () => {
-    let filteredAds = [];
-    return filteredAds
-      .concat(housingTypeFilter())
-      .concat(housingPriceFilter())
-      .concat(housingRoomsFilter())
-      .concat(housingGuestsFilter())
-      .concat(housingFeaturesFilter());
-  };
-
-  const sortAds = (arr) => {
-    for (let i = 0; i < arr.length; i++) {
-      let count = 0;
-      for (let j = 0; j < arr.length; j++) {
-        if (arr[i] === arr[j]) {
-          count += 1;
-        }
-      }
-      arr[i].count = count;
+    let filteredAds = ads;
+    if (document.querySelector(`.map__card.popup`)) {
+      window.card.closeCard();
     }
-
-    arr.sort((left, right) => {
-      if (left.count < right.count) {
-        return 1;
-      }
-      if (left.count > right.count) {
-        return -1;
-      }
-      if (left.count === right.count) {
-        return 0;
-      }
-      return 0;
-    });
-    return arr;
+    filteredAds = filteredAds.filter(housingTypeFilter).filter(housingPriceFilter).filter(housingRoomsFilter).filter(housingGuestsFilter).filter(housingFeaturesFilter);
+    return filteredAds;
   };
+
+  let lastTimeout;
 
   housingType.addEventListener(`change`, () => {
-    maxCountPins = housingTypeFilter().length !== 0 ? housingTypeFilter().length : 5;
-    updateAds(sortAds(onFilter()));
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = setTimeout(() => {
+      updateAds(onFilter());
+    }, 300);
   });
 
   housingPrice.addEventListener(`change`, () => {
-    maxCountPins = housingPriceFilter().length !== 0 ? housingPriceFilter().length : 5;
-    updateAds(sortAds(onFilter()));
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = setTimeout(() => {
+      updateAds(onFilter());
+    }, 300);
   });
 
   housingRooms.addEventListener(`change`, () => {
-    maxCountPins = housingRoomsFilter().length !== 0 ? housingRoomsFilter().length : 5;
-    updateAds(sortAds(onFilter()));
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = setTimeout(() => {
+      updateAds(onFilter());
+    }, 300);
   });
 
   housingGuests.addEventListener(`change`, () => {
-    maxCountPins = housingGuestsFilter().length !== 0 ? housingGuestsFilter().length : 5;
-    updateAds(sortAds(onFilter()));
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = setTimeout(() => {
+      updateAds(onFilter());
+    }, 300);
   });
 
   for (let i = 0; i < housingFeaturesInputs.length; i++) {
     housingFeaturesInputs[i].addEventListener(`change`, () => {
-      maxCountPins = housingFeaturesFilter().length !== 0 ? housingFeaturesFilter().length : 5;
-      updateAds(sortAds(onFilter()));
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = setTimeout(() => {
+        updateAds(onFilter());
+      }, 300);
     });
   }
 
