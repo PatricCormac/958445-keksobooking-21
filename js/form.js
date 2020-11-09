@@ -37,7 +37,7 @@
         inputPrice.min = `5000`;
         inputPrice.placeholder = `5000`;
         break;
-      case `bungalo`:
+      case `bungalow`:
         inputPrice.min = `0`;
         inputPrice.placeholder = `0`;
         break;
