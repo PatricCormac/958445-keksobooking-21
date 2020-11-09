@@ -1,7 +1,6 @@
 'use strict';
 
 (() => {
-  const MAX_COUNT_PINS = 5;
   const pinsList = document.querySelector(`.map__pins`);
   const mainPin = document.querySelector(`.map__pin--main`);
 
@@ -13,14 +12,11 @@
   const housingFeaturesInputs = housingFeatures.querySelectorAll(`input`);
   const fragment = document.createDocumentFragment();
 
-  let filteredAds = [];
+  let maxCountPins = 5;
   let ads = [];
 
   const appEndAds = (arr) => {
-    for (let i = 0; i < MAX_COUNT_PINS; i++) {
-      if (!arr[i]) {
-        return;
-      }
+    for (let i = 0; i < maxCountPins; i++) {
       fragment.append(window.render.renderAds(arr[i]));
     }
   };
@@ -44,30 +40,28 @@
     } else {
       arr = ads.filter((item) => item.offer.type === housingType.value);
     }
-    filteredAds = filteredAds.filter((item) => item.offer.type === housingType.value);
-    filteredAds = arr.concat(filteredAds);
+
+    return arr;
   };
 
   const housingPriceFilter = () => {
     let arr = [];
     switch (housingPrice.value) {
       case `low`:
-        filteredAds = filteredAds.filter((item) => item.offer.price < 10000);
         arr = ads.filter((item) => item.offer.price < 10000);
         break;
       case `middle`:
-        filteredAds = filteredAds.filter((item) => item.offer.price >= 10000 && item.offer.price < 50000);
         arr = ads.filter((item) => item.offer.price >= 10000 && item.offer.price < 50000);
         break;
       case `high`:
-        filteredAds = filteredAds.filter((item) => item.offer.price >= 50000);
         arr = ads.filter((item) => item.offer.price >= 50000);
         break;
       case `any`:
         arr = ads;
         break;
     }
-    filteredAds = arr.concat(filteredAds);
+
+    return arr;
   };
 
   const housingRoomsFilter = () => {
@@ -77,7 +71,8 @@
     } else {
       arr = ads.filter((item) => item.offer.rooms === parseInt(housingRooms.value, 10));
     }
-    filteredAds = arr.concat(filteredAds);
+
+    return arr;
   };
 
   const housingGuestsFilter = () => {
@@ -87,7 +82,7 @@
     } else {
       arr = ads.filter((item) => item.offer.guests === parseInt(housingGuests.value, 10));
     }
-    filteredAds = arr.concat(filteredAds);
+    return arr;
   };
 
   const housingFeaturesFilter = () => {
@@ -98,21 +93,26 @@
       }
       return 0;
     });
-    filteredAds = arr.concat(filteredAds);
+    return arr;
   };
 
-  const sortAds = () => {
-    for (let i = 0; i < filteredAds.length; i++) {
+  const onFilter = () => {
+    let filteredAds = [];
+    return filteredAds.concat(housingTypeFilter()).concat(housingPriceFilter()).concat(housingRoomsFilter()).concat(housingGuestsFilter()).concat(housingFeaturesFilter());
+  };
+
+  const sortAds = (arr) => {
+    for (let i = 0; i < arr.length; i++) {
       let count = 0;
-      for (let j = 0; j < filteredAds.length; j++) {
-        if (filteredAds[i] === filteredAds[j]) {
+      for (let j = 0; j < arr.length; j++) {
+        if (arr[i] === arr[j]) {
           count += 1;
         }
       }
-      filteredAds[i].count = count;
+      arr[i].count = count;
     }
 
-    filteredAds.sort((left, right) => {
+    arr.sort((left, right) => {
       if (left.count < right.count) {
         return 1;
       }
@@ -124,60 +124,33 @@
       }
       return 0;
     });
-    return filteredAds;
+    return arr;
   };
 
-  let lastTimeout;
-
   housingType.addEventListener(`change`, () => {
-    if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
-    }
-    lastTimeout = setTimeout(() => {
-      housingTypeFilter();
-      updateAds(sortAds());
-    }, 300);
+    maxCountPins = housingTypeFilter().length;
+    updateAds(sortAds(onFilter()));
   });
 
   housingPrice.addEventListener(`change`, () => {
-    if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
-    }
-    lastTimeout = setTimeout(() => {
-      housingPriceFilter();
-      updateAds(sortAds());
-    }, 300);
+    maxCountPins = housingPriceFilter().length;
+    updateAds(sortAds(onFilter()));
   });
 
   housingRooms.addEventListener(`change`, () => {
-    if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
-    }
-    lastTimeout = setTimeout(() => {
-      housingRoomsFilter();
-      updateAds(sortAds());
-    }, 300);
+    maxCountPins = housingRoomsFilter().length;
+    updateAds(sortAds(onFilter()));
   });
 
   housingGuests.addEventListener(`change`, () => {
-    if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
-    }
-    lastTimeout = setTimeout(() => {
-      housingGuestsFilter();
-      updateAds(sortAds());
-    }, 300);
+    maxCountPins = housingGuestsFilter().length;
+    updateAds(sortAds(onFilter()));
   });
 
   for (let i = 0; i < housingFeaturesInputs.length; i++) {
     housingFeaturesInputs[i].addEventListener(`change`, () => {
-      if (lastTimeout) {
-        window.clearTimeout(lastTimeout);
-      }
-      lastTimeout = setTimeout(() => {
-        housingFeaturesFilter();
-        updateAds(sortAds());
-      }, 300);
+      maxCountPins =
+      updateAds(sortAds(onFilter()));
     });
   }
 
