@@ -87,9 +87,30 @@
 
   const housingFeaturesFilter = () => {
     let arr = [];
+    let features = [];
+    for (let i = 0; i < housingFeatures.querySelectorAll(`input:checked`).length; i++) {
+      features.push(housingFeatures.querySelectorAll(`input:checked`)[i].value);
+    }
     arr = ads.filter((item) => {
-      for (let i = 0; i < housingFeatures.querySelectorAll(`input:checked`).length; i++) {
-        return item.offer.features.includes(housingFeatures.querySelectorAll(`input:checked`)[i].value);
+      let countFeatures = 0;
+      for (let i = 0; i < features.length; i++) {
+        if (item.offer.features.includes(features[i])) {
+          countFeatures++;
+        }
+      }
+      item.countFeatures = countFeatures;
+      return item.countFeatures > 0;
+    });
+
+    arr.sort((left, right) => {
+      if (left.countFeatures < right.countFeatures) {
+        return 1;
+      }
+      if (left.countFeatures > right.countFeatures) {
+        return -1;
+      }
+      if (left.countFeatures === right.countFeatures) {
+        return 0;
       }
       return 0;
     });
@@ -98,7 +119,12 @@
 
   const onFilter = () => {
     let filteredAds = [];
-    return filteredAds.concat(housingTypeFilter()).concat(housingPriceFilter()).concat(housingRoomsFilter()).concat(housingGuestsFilter()).concat(housingFeaturesFilter());
+    return filteredAds
+      .concat(housingTypeFilter())
+      .concat(housingPriceFilter())
+      .concat(housingRoomsFilter())
+      .concat(housingGuestsFilter())
+      .concat(housingFeaturesFilter());
   };
 
   const sortAds = (arr) => {
@@ -128,28 +154,28 @@
   };
 
   housingType.addEventListener(`change`, () => {
-    maxCountPins = housingTypeFilter().length;
+    maxCountPins = housingTypeFilter().length !== 0 ? housingTypeFilter().length : 5;
     updateAds(sortAds(onFilter()));
   });
 
   housingPrice.addEventListener(`change`, () => {
-    maxCountPins = housingPriceFilter().length;
+    maxCountPins = housingPriceFilter().length !== 0 ? housingPriceFilter().length : 5;
     updateAds(sortAds(onFilter()));
   });
 
   housingRooms.addEventListener(`change`, () => {
-    maxCountPins = housingRoomsFilter().length;
+    maxCountPins = housingRoomsFilter().length !== 0 ? housingRoomsFilter().length : 5;
     updateAds(sortAds(onFilter()));
   });
 
   housingGuests.addEventListener(`change`, () => {
-    maxCountPins = housingGuestsFilter().length;
+    maxCountPins = housingGuestsFilter().length !== 0 ? housingGuestsFilter().length : 5;
     updateAds(sortAds(onFilter()));
   });
 
   for (let i = 0; i < housingFeaturesInputs.length; i++) {
     housingFeaturesInputs[i].addEventListener(`change`, () => {
-      maxCountPins =
+      maxCountPins = housingFeaturesFilter().length !== 0 ? housingFeaturesFilter().length : 5;
       updateAds(sortAds(onFilter()));
     });
   }
