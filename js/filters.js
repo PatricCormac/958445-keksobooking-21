@@ -15,7 +15,7 @@
   let maxCountPins = 5;
   let ads = [];
 
-  const appEndAds = (arr) => {
+  const appEndAds = (arr = ads) => {
     for (let i = 0; i < maxCountPins; i++) {
       if (arr[i]) {
         fragment.append(window.render.renderAds(arr[i]));
@@ -82,7 +82,12 @@
     if (document.querySelector(`.map__card.popup`)) {
       window.card.closeCard();
     }
-    filteredAds = filteredAds.filter(housingTypeFilter).filter(housingPriceFilter).filter(housingRoomsFilter).filter(housingGuestsFilter).filter(housingFeaturesFilter);
+    filteredAds = filteredAds
+      .filter(housingTypeFilter)
+      .filter(housingPriceFilter)
+      .filter(housingRoomsFilter)
+      .filter(housingGuestsFilter)
+      .filter(housingFeaturesFilter);
     return filteredAds;
   };
 
@@ -136,6 +141,7 @@
   }
 
   window.filters = {
+    appEndAds,
     pins: fragment
   };
 })();

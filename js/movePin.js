@@ -1,13 +1,13 @@
 'use strict';
 
 (() => {
+  const TOP_FIELD_BORDER = 130;
+  const BOTTOM_FIELD_BORDER = 630;
   const pin = document.querySelector(`.map__pin--main`);
   const inputAddress = document.querySelector(`#address`);
   const map = document.querySelector(`.map`);
-  const PIN_WIDTH = pin.offsetWidth;
-  const PIN_HEIGHT = pin.offsetHeight;
-  const TOP_FIELD_BORDER = 130;
-  const BOTTOM_FIELD_BORDER = 630;
+  const pinWidth = pin.offsetWidth;
+  const pinHeight = pin.offsetHeight;
 
   pin.addEventListener(`mousedown`, (evt) => {
     evt.preventDefault();
@@ -34,23 +34,23 @@
         y: moveEvt.clientY
       };
 
-      if (pin.offsetTop - shift.y - PIN_HEIGHT < TOP_FIELD_BORDER) {
-        pin.style.top = TOP_FIELD_BORDER + PIN_HEIGHT + `px`;
-      } else if (pin.offsetTop - shift.y + PIN_HEIGHT > BOTTOM_FIELD_BORDER) {
-        pin.style.top = BOTTOM_FIELD_BORDER - PIN_HEIGHT + `px`;
+      if (pin.offsetTop - shift.y - pinHeight < TOP_FIELD_BORDER) {
+        pin.style.top = TOP_FIELD_BORDER + pinHeight + `px`;
+      } else if (pin.offsetTop - shift.y + pinHeight > BOTTOM_FIELD_BORDER) {
+        pin.style.top = BOTTOM_FIELD_BORDER - pinHeight + `px`;
       } else {
         pin.style.top = pin.offsetTop - shift.y + `px`;
       }
 
       if (pin.offsetLeft - shift.x < 0) {
-        pin.style.right = PIN_WIDTH + `px`;
-      } else if (pin.offsetLeft - shift.x + PIN_WIDTH > map.offsetWidth) {
-        pin.style.left = map.offsetWidth - PIN_WIDTH + `px`;
+        pin.style.right = pinWidth + `px`;
+      } else if (pin.offsetLeft - shift.x + pinWidth > map.offsetWidth) {
+        pin.style.left = map.offsetWidth - pinWidth + `px`;
       } else {
         pin.style.left = pin.offsetLeft - shift.x + `px`;
       }
 
-      inputAddress.value = `${pin.offsetLeft - shift.x + PIN_WIDTH} ${pin.offsetTop - shift.y + PIN_HEIGHT}`;
+      inputAddress.value = `${pin.offsetLeft - shift.x + pinWidth} ${pin.offsetTop - shift.y + pinHeight}`;
     };
 
     const onMouseUp = (upEvt) => {
