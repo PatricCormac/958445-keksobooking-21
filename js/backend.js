@@ -1,6 +1,6 @@
 'use strict';
 
-window.backend = (() => {
+(() => {
   const URL = `https://21.javascript.pages.academy/keksobooking`;
   const statusCode = {
     OK: 200
@@ -23,57 +23,60 @@ window.backend = (() => {
     });
   };
 
-  return {
-    load: (onSuccess, onError) => {
-      const xhr = new XMLHttpRequest();
-      xhr.responseType = `json`;
+  const load = (onSuccess, onError) => {
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = `json`;
 
-      xhr.addEventListener(`load`, () => {
-        if (xhr.status === statusCode.OK) {
-          onSuccess(xhr.response);
-        } else {
-          onError(showError());
-        }
-      });
-
-      xhr.addEventListener(`error`, () => {
+    xhr.addEventListener(`load`, () => {
+      if (xhr.status === statusCode.OK) {
+        onSuccess(xhr.response);
+      } else {
         onError(showError());
-      });
+      }
+    });
 
-      xhr.addEventListener(`timeout`, () => {
+    xhr.addEventListener(`error`, () => {
+      onError(showError());
+    });
+
+    xhr.addEventListener(`timeout`, () => {
+      onError(showError());
+    });
+
+    xhr.timeout = TIMEOUT_IN_MS;
+
+    xhr.open(`GET`, `${URL}/data`);
+    xhr.send();
+  };
+
+  const save = (data, onLoad, onError) => {
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = `json`;
+
+    xhr.addEventListener(`load`, () => {
+      if (xhr.status === statusCode.OK) {
+        onLoad(xhr.response);
+      } else {
         onError(showError());
-      });
+      }
+    });
 
-      xhr.timeout = TIMEOUT_IN_MS;
+    xhr.addEventListener(`error`, () => {
+      onError(showError());
+    });
 
-      xhr.open(`GET`, `${URL}/data`);
-      xhr.send();
-    },
+    xhr.addEventListener(`timeout`, () => {
+      onError(showError());
+    });
 
-    save: (data, onLoad, onError) => {
-      const xhr = new XMLHttpRequest();
-      xhr.responseType = `json`;
+    xhr.timeout = TIMEOUT_IN_MS;
 
-      xhr.addEventListener(`load`, () => {
-        if (xhr.status === statusCode.OK) {
-          onLoad(xhr.response);
-        } else {
-          onError(showError());
-        }
-      });
+    xhr.open(`POST`, `${URL}`);
+    xhr.send(data);
+  };
 
-      xhr.addEventListener(`error`, () => {
-        onError(showError());
-      });
-
-      xhr.addEventListener(`timeout`, () => {
-        onError(showError());
-      });
-
-      xhr.timeout = TIMEOUT_IN_MS;
-
-      xhr.open(`POST`, `${URL}`);
-      xhr.send(data);
-    }
+  window.backend = {
+    load,
+    save
   };
 })();
