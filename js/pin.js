@@ -63,8 +63,8 @@
     for (let i = 0; i < fieldsets.length; i++) {
       fieldsets[i].disabled = true;
     }
-    mainPin.style.left = `50%` + mainPinWidth;
-    mainPin.style.top = `50%` + mainPinHeight;
+    mainPin.style.left = `50%`;
+    mainPin.style.top = `50%`;
     document.addEventListener(`mousedown`, window.pin.onActivePage);
     document.addEventListener(`keydown`, (evt) => {
       if (evt.key === `Escape`) {
