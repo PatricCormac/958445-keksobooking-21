@@ -3,6 +3,7 @@
 (() => {
   const adForm = document.querySelector(`.ad-form`);
   const fieldsets = document.querySelectorAll(`fieldset`);
+  const mapFilters = document.querySelectorAll(`.map__filter`);
   const mainPin = document.querySelector(`.map__pin--main`);
   const mapElement = document.querySelector(`.map`);
   const pinsList = document.querySelector(`.map__pins`);
@@ -10,12 +11,17 @@
   const mainPinHeight = mainPin.offsetHeight;
   const successTemp = document.querySelector(`#success`).content;
   const inputs = document.querySelectorAll(`input`);
+  const adFormReset = document.querySelector(`.ad-form__reset`);
 
   let mainPinLocationX = Math.round(parseInt(mainPin.style.left, 10) + parseInt(mainPinWidth, 10) / 2);
   let mainPinLocationY = Math.round(parseInt(mainPin.style.top, 10) + parseInt(mainPinHeight, 10) / 2);
 
   for (let i = 0; i < fieldsets.length; i++) {
     fieldsets[i].disabled = true;
+  }
+
+  for (let i = 0; i < mapFilters.length; i++) {
+    mapFilters[i].disabled = true;
   }
 
   mainPin.addEventListener(`mousedown`, (evt) => {
@@ -30,23 +36,44 @@
     }
   });
 
+  window.form.setPriceTypeHouse();
+
+  document.querySelector(`[name="address"]`).value = `${mainPinLocationX} ${mainPinLocationY}`;
+
   const onActivePage = () => {
-    if (document.querySelector(`.success`)) {
-      document.querySelector(`.success`).remove();
-      document.removeEventListener(`mousedown`, window.pin.onActivePage);
-    }
+    adFormReset.addEventListener(`mousedown`, window.pin.onDisablePage);
+    document.querySelector(`[name="address"]`).value = `${mainPinLocationX} ${mainPinLocationY}`;
     mapElement.classList.remove(`map--faded`);
     window.filters.appEndAds();
     pinsList.append(window.filters.pins);
     adForm.classList.remove(`ad-form--disabled`);
-    document.querySelector(`[name="address"]`).value = `${mainPinLocationX} ${mainPinLocationY}`;
     for (let i = 0; i < fieldsets.length; i++) {
       fieldsets[i].disabled = false;
+    }
+    for (let i = 0; i < mapFilters.length; i++) {
+      mapFilters[i].disabled = false;
+    }
+  };
+
+  const pressEsc = (evt) => {
+    if (evt.key === `Escape`) {
+      closeSuccess();
+    }
+  };
+
+  const closeSuccess = () => {
+    if (document.querySelector(`.success`)) {
+      document.querySelector(`.success`).remove();
+      document.removeEventListener(`mousedown`, closeSuccess);
+      document.removeEventListener(`keydown`, pressEsc);
     }
   };
 
   const onDisablePage = () => {
     const pinsElements = pinsList.querySelectorAll(`[type="button"]`);
+    for (let i = 0; i < mapFilters.length; i++) {
+      mapFilters[i].disabled = true;
+    }
     mapElement.classList.add(`map--faded`);
     if (document.querySelector(`.map__card.popup`)) {
       window.card.closeCard();
@@ -65,12 +92,8 @@
     }
     mainPin.style.left = `50%`;
     mainPin.style.top = `50%`;
-    document.addEventListener(`mousedown`, window.pin.onActivePage);
-    document.addEventListener(`keydown`, (evt) => {
-      if (evt.key === `Escape`) {
-        window.pin.onActivePage();
-      }
-    });
+    document.addEventListener(`mousedown`, closeSuccess);
+    document.addEventListener(`keydown`, pressEsc);
   };
 
   window.pin = {

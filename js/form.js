@@ -9,7 +9,7 @@
   const inputTimeIn = form.querySelector(`#timein`);
   const inputTimeOut = form.querySelector(`#timeout`);
 
-  const roomsGuestsValidity = () => {
+  const inputGuestsHandler = () => {
     if (inputGuests.value > inputRooms.value) {
       inputRooms.setCustomValidity(`Гости не поместятся!`);
       inputGuests.setCustomValidity(`Гости не поместятся!`);
@@ -22,7 +22,7 @@
     inputGuests.reportValidity();
   };
 
-  inputTypeHouse.addEventListener(`input`, () => {
+  const setPriceTypeHouse = () => {
     const typeHouseValue = inputTypeHouse.value;
     switch (typeHouseValue) {
       case `palace`:
@@ -42,7 +42,13 @@
         inputPrice.placeholder = `0`;
         break;
     }
-  });
+  };
+
+  const inputTypeHouseHandler = () => {
+    setPriceTypeHouse();
+  };
+
+  inputTypeHouse.addEventListener(`input`, inputTypeHouseHandler);
 
   inputTimeIn.addEventListener(`input`, () => {
     inputTimeOut.selectedIndex = inputTimeIn.selectedIndex;
@@ -52,8 +58,8 @@
     inputTimeIn.selectedIndex = inputTimeOut.selectedIndex;
   });
 
-  inputRooms.addEventListener(`input`, roomsGuestsValidity);
-  inputGuests.addEventListener(`input`, roomsGuestsValidity);
+  inputRooms.addEventListener(`input`, inputGuestsHandler);
+  inputGuests.addEventListener(`input`, inputGuestsHandler);
 
   form.addEventListener(`submit`, (evt) => {
     window.backend.save(new FormData(form), () => {
@@ -61,4 +67,8 @@
     });
     evt.preventDefault();
   });
+
+  window.form = {
+    setPriceTypeHouse
+  };
 })();

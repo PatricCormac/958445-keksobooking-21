@@ -34,23 +34,23 @@
         y: moveEvt.clientY
       };
 
-      if (pin.offsetTop - shift.y - pinHeight < TOP_FIELD_BORDER) {
-        pin.style.top = TOP_FIELD_BORDER + pinHeight + `px`;
+      if (pin.offsetTop - shift.y + pinHeight < TOP_FIELD_BORDER) {
+        pin.style.top = TOP_FIELD_BORDER - pinHeight + 2 + `px`;
       } else if (pin.offsetTop - shift.y + pinHeight > BOTTOM_FIELD_BORDER) {
-        pin.style.top = BOTTOM_FIELD_BORDER - pinHeight + `px`;
+        pin.style.top = BOTTOM_FIELD_BORDER - pinHeight - 1 + `px`;
       } else {
         pin.style.top = pin.offsetTop - shift.y + `px`;
       }
 
-      if (pin.offsetLeft - shift.x < 0) {
-        pin.style.right = pinWidth + `px`;
-      } else if (pin.offsetLeft - shift.x + pinWidth > map.offsetWidth) {
-        pin.style.left = map.offsetWidth - pinWidth + `px`;
+      if (pin.offsetLeft - shift.x + Math.round(pinWidth / 2) - 1 < 0) {
+        pin.style.right = Math.round(pinWidth / 2) + `px`;
+      } else if (pin.offsetLeft - shift.x + Math.round(pinWidth / 2) > map.offsetWidth) {
+        pin.style.left = map.offsetWidth - Math.round(pinWidth / 2) + `px`;
       } else {
         pin.style.left = pin.offsetLeft - shift.x + `px`;
       }
 
-      inputAddress.value = `${pin.offsetLeft - shift.x + pinWidth} ${pin.offsetTop - shift.y + pinHeight}`;
+      inputAddress.value = `${pin.offsetLeft - shift.x + Math.round(pinWidth / 2)} ${pin.offsetTop - shift.y + pinHeight}`;
     };
 
     const onMouseUp = (upEvt) => {

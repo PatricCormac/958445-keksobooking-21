@@ -16,11 +16,15 @@
     }
   };
 
+  const onCloseCardButtonClick = () => {
+    window.card.closeCard();
+  };
+
   const openCard = (cardElement) => {
     mapElement.insertBefore(cardElement, mapElement.querySelector(`.map__filters-container`));
     const closeCardButton = document.querySelector(`.popup__close`);
     document.addEventListener(`keydown`, pressEscHandler);
-    closeCardButton.addEventListener(`click`, window.card.closeCard);
+    closeCardButton.addEventListener(`click`, onCloseCardButtonClick);
     closeCardButton.addEventListener(`keydown`, pressEnterHandler);
   };
 
@@ -47,7 +51,7 @@
     const closeCardButton = document.querySelector(`.popup__close`);
     document.removeEventListener(`keydown`, pressEscHandler);
     closeCardButton.removeEventListener(`keydown`, pressEnterHandler);
-    closeCardButton.removeEventListener(`click`, window.card.closeCard);
+    closeCardButton.removeEventListener(`click`, onCloseCardButtonClick);
     document.querySelector(`.map__card.popup`).remove();
   };
 

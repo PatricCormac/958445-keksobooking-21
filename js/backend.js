@@ -2,23 +2,23 @@
 
 (() => {
   const URL = `https://21.javascript.pages.academy/keksobooking`;
+  const TIMEOUT_IN_MS = 10000;
   const statusCode = {
     OK: 200
   };
-  const TIMEOUT_IN_MS = 10000;
   const errorTemp = document.querySelector(`#error`).content;
 
-  const hideError = () => {
+  const onErrorElemHandler = () => {
     document.querySelector(`main`).removeChild(document.querySelector(`.error`));
   };
 
   const showError = () => {
     const errorElement = errorTemp.cloneNode(true);
     document.querySelector(`main`).append(errorElement);
-    document.addEventListener(`click`, hideError);
+    document.addEventListener(`click`, onErrorElemHandler);
     document.addEventListener(`keydown`, (evt) => {
       if (evt.key === `Escape`) {
-        hideError();
+        onErrorElemHandler();
       }
     });
   };

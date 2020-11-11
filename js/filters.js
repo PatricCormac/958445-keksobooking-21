@@ -1,6 +1,9 @@
 'use strict';
 
 (() => {
+  let MAX_COUNT_PINS = 5;
+  const MIN_PRICE_VALUE_OF_MIDDLE = 10000;
+  const MAX_PRICE_VALUE_OF_MIDDLE = 50000;
   const pinsList = document.querySelector(`.map__pins`);
   const mainPin = document.querySelector(`.map__pin--main`);
 
@@ -12,11 +15,10 @@
   const housingFeaturesInputs = housingFeatures.querySelectorAll(`input`);
   const fragment = document.createDocumentFragment();
 
-  let maxCountPins = 5;
   let ads = [];
 
   const appEndAds = (arr = ads) => {
-    for (let i = 0; i < maxCountPins; i++) {
+    for (let i = 0; i < MAX_COUNT_PINS; i++) {
       if (arr[i]) {
         fragment.append(window.render.renderAds(arr[i]));
       } else {
@@ -44,11 +46,11 @@
   const housingPriceFilter = (item) => {
     switch (housingPrice.value) {
       case `low`:
-        return item.offer.price <= 10000;
+        return item.offer.price <= MIN_PRICE_VALUE_OF_MIDDLE;
       case `middle`:
-        return item.offer.price > 10000 && item.offer.price < 50000;
+        return item.offer.price > MIN_PRICE_VALUE_OF_MIDDLE && item.offer.price < MAX_PRICE_VALUE_OF_MIDDLE;
       case `high`:
-        return item.offer.price >= 50000;
+        return item.offer.price >= MAX_PRICE_VALUE_OF_MIDDLE;
       case `any`:
         return true;
     }
