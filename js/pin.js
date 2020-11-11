@@ -87,6 +87,7 @@
     for (let i = 0; i < inputs.length; i++) {
       inputs[i].value = ``;
     }
+    document.querySelector(`[name="address"]`).value = `${mainPinLocationX} ${mainPinLocationY}`;
     for (let i = 0; i < fieldsets.length; i++) {
       fieldsets[i].disabled = true;
     }
