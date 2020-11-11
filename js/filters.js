@@ -46,9 +46,9 @@
   const housingPriceFilter = (item) => {
     switch (housingPrice.value) {
       case `low`:
-        return item.offer.price <= MIN_PRICE_VALUE_OF_MIDDLE;
+        return item.offer.price < MIN_PRICE_VALUE_OF_MIDDLE;
       case `middle`:
-        return item.offer.price > MIN_PRICE_VALUE_OF_MIDDLE && item.offer.price < MAX_PRICE_VALUE_OF_MIDDLE;
+        return item.offer.price >= MIN_PRICE_VALUE_OF_MIDDLE && item.offer.price < MAX_PRICE_VALUE_OF_MIDDLE;
       case `high`:
         return item.offer.price >= MAX_PRICE_VALUE_OF_MIDDLE;
       case `any`:
