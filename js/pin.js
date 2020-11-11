@@ -12,6 +12,10 @@
   const successTemp = document.querySelector(`#success`).content;
   const inputs = document.querySelectorAll(`input`);
   const adFormReset = document.querySelector(`.ad-form__reset`);
+  const inputRooms = adForm.querySelector(`#room_number`);
+  const inputGuests = adForm.querySelector(`#capacity`);
+  const inputTimeIn = adForm.querySelector(`#timein`);
+  const inputTimeOut = adForm.querySelector(`#timeout`);
 
   let mainPinLocationX = Math.round(parseInt(mainPin.style.left, 10) + parseInt(mainPinWidth, 10) / 2);
   let mainPinLocationY = Math.round(parseInt(mainPin.style.top, 10) + parseInt(mainPinHeight, 10) / 2);
@@ -87,12 +91,20 @@
     for (let i = 0; i < inputs.length; i++) {
       inputs[i].value = ``;
     }
+    document.querySelector(`textarea`).value = ``;
+    inputRooms.selectedIndex = 0;
+    inputGuests.selectedIndex = 2;
+    inputTimeIn.selectedIndex = 0;
+    inputTimeOut.selectedIndex = 0;
+    for (let i = 0; i < document.querySelectorAll(`[type="checkbox"]`).length; i++) {
+      document.querySelectorAll(`[type="checkbox"]`)[i].checked = false;
+    }
     document.querySelector(`[name="address"]`).value = `${mainPinLocationX} ${mainPinLocationY}`;
     for (let i = 0; i < fieldsets.length; i++) {
       fieldsets[i].disabled = true;
     }
-    mainPin.style.left = `50%`;
-    mainPin.style.top = `50%`;
+    mainPin.style.left = `${mainPinLocationX - (mainPinWidth / 2)}px`;
+    mainPin.style.top = `${mainPinLocationY - (mainPinHeight / 2)}px`;
     document.addEventListener(`mousedown`, closeSuccess);
     document.addEventListener(`keydown`, pressEsc);
   };

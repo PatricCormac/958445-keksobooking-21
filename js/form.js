@@ -10,7 +10,9 @@
   const inputTimeOut = form.querySelector(`#timeout`);
 
   const inputGuestsHandler = () => {
-    if (inputGuests.value > inputRooms.value) {
+    if (parseInt(inputRooms.value, 10) === 100 && parseInt(inputGuests.value, 10) !== 0) {
+      inputGuests.setCustomValidity(`Не для гостей!`);
+    } else if (parseInt(inputGuests.value, 10) > parseInt(inputRooms.value, 10)) {
       inputRooms.setCustomValidity(`Гости не поместятся!`);
       inputGuests.setCustomValidity(`Гости не поместятся!`);
     } else {
